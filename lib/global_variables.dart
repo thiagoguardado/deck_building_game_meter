@@ -1,5 +1,4 @@
 class GlobalParameters {
-
-static const gameName = "Deck Building Game";
-
+  static const String gameName = "Deck Building Game";
+  static const int initialPlayerCounter = 0;
 }
