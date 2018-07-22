@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './change_player_number.dart';
+import './main.dart';
 
 class StartCounterPage extends StatelessWidget {
+
   void routeToCounterPage(BuildContext context, int numberOfPlayers) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CounterPage(numberOfPlayers)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CounterPage(AppGlobal.numberOfPlayers)));
   }
 
   @override
@@ -37,7 +41,7 @@ class StartCounterPage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            StartButton(() => routeToCounterPage(context,4)),
+            StartButton(() => routeToCounterPage(context, 4)),
           ],
         ),
       ),
