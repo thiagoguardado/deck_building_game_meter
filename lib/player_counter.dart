@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import './main.dart';
-import './counter_page.dart';
+import './game_counter.dart';
+import './global_variables.dart';
 
 class PlayerCounter extends StatefulWidget {
   final int initialCounter;
   final GameCounter _gameCounter;
 
-  PlayerCounter(this.initialCounter,this._gameCounter);
+  PlayerCounter(this.initialCounter, this._gameCounter);
 
   @override
   _PlayerCounterState createState() => _PlayerCounterState(initialCounter);
@@ -27,57 +27,168 @@ class _PlayerCounterState extends State<PlayerCounter> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       color: Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text("Player",style: TextStyle(fontSize: 25.0),),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                MaterialButton(
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: FittedBox(
                   child: Text(
-                    "-",
-                    style: TextStyle(fontSize: 40.0),
+                    "Player",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () => changeCounter(-1),
-                  color: Theme.of(context).buttonColor,
-                  height: 50.0,
-                  minWidth: 75.0,
                 ),
-                Card(
-                  color: Theme.of(context).buttonColor,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Text(
-                      _counter.toString(),
-                      style: TextStyle(fontSize: 75.0),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Column(children: <Widget>[
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: RaisedButton(
+                          child: Row(children: [
+                            Expanded(
+                              child: FittedBox(
+                                child: Text(
+                                  "-",
+                                ),
+                              ),
+                            ),
+                          ]),
+                          onPressed: () => changeCounter(-1),
+                          color: Theme.of(context).buttonColor,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                    ]),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Card(
+                      color: Theme.of(context).buttonColor,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: FittedBox(
+                          child: Text(
+                            _counter.toString(),
+                          ),
+                        ),
+                      ),
+                      margin: EdgeInsets.all(7.5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
                     ),
                   ),
-                  margin: EdgeInsets.all(7.5),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                ),
-                MaterialButton(
-                  child: Text(
-                    "+",
-                    style: TextStyle(fontSize: 40.0),
+                  Expanded(
+                    flex: 2,
+                    child: Column(children: [
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: RaisedButton(
+                          child: Row(children: [
+                            Expanded(
+                              child: FittedBox(
+                                child: Text(
+                                  "+",
+                                ),
+                              ),
+                            ),
+                          ]),
+                          onPressed: () => changeCounter(1),
+                          color: Theme.of(context).buttonColor,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                    ]),
                   ),
-                  onPressed: () => changeCounter(1),
-                  color: Theme.of(context).buttonColor,
-                  height: 50.0,
-                  minWidth: 75.0,
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class PlayersCounters extends StatelessWidget {
+  final int _numberOfPlayers;
+  final GameCounter _gameCounter;
+
+  PlayersCounters(this._numberOfPlayers, this._gameCounter);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    List<Widget> children = <Widget>[];
+
+    for (var i = 0; i < _numberOfPlayers; i++) {
+      children.add(
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: PlayerCounter(
+                        GlobalParameters.initialPlayerCounter, _gameCounter),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                ]),
+          ),
+        ),
+      );
+    }
+
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: <Widget>[
+        Container(),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: _numberOfPlayers * MediaQuery.of(context).size.height/4),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: children,
+          ),
+        ),
+      ],
     );
   }
 }

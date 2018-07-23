@@ -38,15 +38,24 @@ class ChangePlayerNumberState extends State<ChangePlayerNumber> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          ChangePlayerNumberButton(
-              "-", AppGlobal.numberOfPlayers > widget.minNumberofPlayers, () {
-            handleChangePlayerNumberButtonPress(-1);
-          }),
-          PlayerNumber(),
-          ChangePlayerNumberButton(
-              "+", AppGlobal.numberOfPlayers < widget.maxNumberOfPlayers, () {
-            handleChangePlayerNumberButtonPress(1);
-          }),
+          Expanded(
+            flex: 2,
+            child: ChangePlayerNumberButton(
+                "-", AppGlobal.numberOfPlayers > widget.minNumberofPlayers, () {
+              handleChangePlayerNumberButtonPress(-1);
+            }),
+          ),
+          Expanded(
+            flex: 3,
+            child: PlayerNumber(),
+          ),
+          Expanded(
+            flex: 2,
+            child: ChangePlayerNumberButton(
+                "+", AppGlobal.numberOfPlayers < widget.maxNumberOfPlayers, () {
+              handleChangePlayerNumberButtonPress(1);
+            }),
+          ),
         ],
       ),
     );
@@ -63,22 +72,29 @@ class ChangePlayerNumberButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return RaisedButton(
-      onPressed: _isEnabled
-          ? () {
-              _onPressed();
-            }
-          : null,
-      child: Text(
-        _text,
-        style: new TextStyle(
-          fontSize: 50.0,
-          color: Theme.of(context).primaryColor,
+    return Padding(
+      padding: EdgeInsets.all(7.5),
+      child: RaisedButton(
+        onPressed: _isEnabled
+            ? () {
+                _onPressed();
+              }
+            : null,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 50.0),
+          child: FittedBox(
+            child: Text(
+              _text,
+              style: new TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
         ),
+        shape: new RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.0)),
+        color: Theme.of(context).buttonColor,
       ),
-      shape:
-          new RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
-      color: Theme.of(context).buttonColor,
     );
   }
 }
@@ -93,12 +109,14 @@ class PlayerNumber extends StatelessWidget {
         child: Card(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: Text(
-              AppGlobal.numberOfPlayers.toString(),
-              style: new TextStyle(
-                fontSize: 180.0,
-                color: Theme.of(context).buttonColor,
-                fontWeight: FontWeight.bold,
+            child: FittedBox(
+              child: Text(
+                AppGlobal.numberOfPlayers.toString(),
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  color: Theme.of(context).buttonColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

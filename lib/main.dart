@@ -34,6 +34,7 @@ class AppGlobal {
 
   static void startGameCounter() {
     gameCounter = gamePointsPerPlayer * numberOfPlayers;
+    print(gameCounter);
   }
 
   static void changeGameCounter(int addNumber)

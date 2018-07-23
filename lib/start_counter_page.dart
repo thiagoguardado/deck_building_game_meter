@@ -1,5 +1,4 @@
 import 'package:deck_building_game_meter/counter_page.dart';
-import 'package:deck_building_game_meter/global_variables.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,12 +6,15 @@ import './change_player_number.dart';
 import './main.dart';
 
 class StartCounterPage extends StatelessWidget {
-
   void routeToCounterPage(BuildContext context, int numberOfPlayers) {
+    print(AppGlobal.numberOfPlayers);
+
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => CounterPage(AppGlobal.numberOfPlayers)));
+
+    print(AppGlobal.numberOfPlayers);
   }
 
   @override
@@ -25,23 +27,39 @@ class StartCounterPage extends StatelessWidget {
     return new Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              "Number of Players",
-              style: TextStyle(
-                  fontSize: 40.0,
-                  color: Theme.of(context).primaryColorDark,
-                  fontWeight: FontWeight.bold),
+            Expanded(
+              flex: 1,
+              child: Container(),
             ),
-            SizedBox(
-              height: 20.0,
+            Expanded(
+              flex: 6,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FittedBox(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "Number of Players",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorDark,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    changePlayerWidget,
+                    StartButton(() => routeToCounterPage(context, 4)),
+                  ]),
             ),
-            changePlayerWidget,
-            SizedBox(
-              height: 20.0,
+            Expanded(
+              flex: 1,
+              child: Container(),
             ),
-            StartButton(() => routeToCounterPage(context, 4)),
           ],
         ),
       ),
@@ -57,15 +75,37 @@ class StartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      child: Text(
-        "START",
-        style: TextStyle(fontSize: 75.0, color: Theme.of(context).buttonColor),
+    return Row(children: [
+      Expanded(
+        flex: 1,
+        child: Container(),
       ),
-      color: Theme.of(context).primaryColor,
-      onPressed: () => _onPressed(),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0))),
-    );
+      Expanded(
+        flex: 3,
+        child: RaisedButton(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height / 7),
+            child: FittedBox(
+              child: Padding(
+                padding: EdgeInsets.all(2.5),
+                child: Text(
+                  "START",
+                  style: TextStyle(color: Theme.of(context).buttonColor),
+                ),
+              ),
+            ),
+          ),
+          color: Theme.of(context).primaryColor,
+          onPressed: () => _onPressed(),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        ),
+      ),
+      Expanded(
+        flex: 1,
+        child: Container(),
+      ),
+    ]);
   }
 }
